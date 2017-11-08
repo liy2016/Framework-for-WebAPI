@@ -1,9 +1,20 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="CustomerEntityTests.cs" company="Genesys Source">
-//      Copyright (c) Genesys Source. All rights reserved.
-//      All rights are reserved. Reproduction or transmission in whole or in part, in
-//      any form or by any means, electronic, mechanical or otherwise, is prohibited
-//      without the prior written consent of the copyright owner.
+//      Copyright (c) 2017 Genesys Source. All rights reserved.
+//      Licensed to the Apache Software Foundation (ASF) under one or more 
+//      contributor license agreements.  See the NOTICE file distributed with 
+//      this work for additional information regarding copyright ownership.
+//      The ASF licenses this file to You under the Apache License, Version 2.0 
+//      (the 'License'); you may not use this file except in compliance with 
+//      the License.  You may obtain a copy of the License at 
+//       
+//        http://www.apache.org/licenses/LICENSE-2.0 
+//       
+//       Unless required by applicable law or agreed to in writing, software  
+//       distributed under the License is distributed on an 'AS IS' BASIS, 
+//       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  
+//       See the License for the specific language governing permissions and  
+//       limitations under the License. 
 // </copyright>
 //-----------------------------------------------------------------------
 using Framework.DataAccess;
@@ -52,10 +63,11 @@ namespace Framework.Test
 
             // Object in db should match in-memory objects
             dbCustomer = dbCustomer.Read(x => x.ID == resultCustomer.ID).FirstOrDefaultSafe();
+            Assert.IsTrue(!dbCustomer.IsNew);
             Assert.IsTrue(dbCustomer.ID != TypeExtension.DefaultInteger);
             Assert.IsTrue(dbCustomer.Key != TypeExtension.DefaultGuid);
-            Assert.IsTrue(dbCustomer.ID == resultCustomer.ID && resultCustomer.ID == newCustomer.ID);
-            Assert.IsTrue(dbCustomer.Key == resultCustomer.Key && resultCustomer.Key == newCustomer.Key);
+            Assert.IsTrue(dbCustomer.ID == resultCustomer.ID);
+            Assert.IsTrue(dbCustomer.Key == resultCustomer.Key);
 
             recycleBin.Add(newCustomer.ID);
         }
@@ -73,6 +85,7 @@ namespace Framework.Test
             lastID = recycleBin.Last();
 
             dbCustomer = dbCustomer.Read(x => x.ID == lastID).FirstOrDefaultSafe();
+            Assert.IsTrue(!dbCustomer.IsNew);
             Assert.IsTrue(dbCustomer.ID != TypeExtension.DefaultInteger);
             Assert.IsTrue(dbCustomer.Key != TypeExtension.DefaultGuid);
             Assert.IsTrue(dbCustomer.CreatedDate.Date == DateTime.UtcNow.Date);
@@ -97,17 +110,20 @@ namespace Framework.Test
             dbCustomer = dbCustomer.Read(x => x.ID == lastID).FirstOrDefaultSafe();
             originalID = dbCustomer.ID;
             originalKey = dbCustomer.Key;
+            Assert.IsTrue(!dbCustomer.IsNew);
             Assert.IsTrue(dbCustomer.ID != TypeExtension.DefaultInteger);
             Assert.IsTrue(dbCustomer.Key != TypeExtension.DefaultGuid);
 
             dbCustomer.FirstName = uniqueValue;
             resultCustomer = dbCustomer.Update();
+            Assert.IsTrue(!resultCustomer.IsNew);
             Assert.IsTrue(resultCustomer.ID != TypeExtension.DefaultInteger);
             Assert.IsTrue(resultCustomer.Key != TypeExtension.DefaultGuid);
             Assert.IsTrue(dbCustomer.ID == resultCustomer.ID && resultCustomer.ID == originalID);
             Assert.IsTrue(dbCustomer.Key == resultCustomer.Key && resultCustomer.Key == originalKey);
 
             dbCustomer = dbCustomer.Read(x => x.ID == originalID).FirstOrDefaultSafe();
+            Assert.IsTrue(!dbCustomer.IsNew);
             Assert.IsTrue(dbCustomer.ID == resultCustomer.ID && resultCustomer.ID == originalID);
             Assert.IsTrue(dbCustomer.Key == resultCustomer.Key && resultCustomer.Key == originalKey);
             Assert.IsTrue(dbCustomer.ID != TypeExtension.DefaultInteger);
@@ -142,7 +158,7 @@ namespace Framework.Test
             dbCustomer = dbCustomer.Read(x => x.ID == originalID).FirstOrDefaultSafe();
             Assert.IsTrue(dbCustomer.ID != originalID);
             Assert.IsTrue(dbCustomer.Key != originalKey);
-            Assert.IsTrue(dbCustomer.ID == TypeExtension.DefaultInteger);
+            Assert.IsTrue(dbCustomer.IsNew);
             Assert.IsTrue(dbCustomer.Key == TypeExtension.DefaultGuid);
         }
         

@@ -27,18 +27,20 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>CODE_ANALYSIS;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
     <RunCodeAnalysis>true</RunCodeAnalysis>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -54,28 +56,25 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Genesys.Extensions.Core, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <HintPath>..\packages\Genesys.Extensions.Core.3.17.8.514\lib\net46\Genesys.Extensions.Core.dll</HintPath>
+      <HintPath>..\packages\Genesys.Extensions.Core.3.17.11.40\lib\net46\Genesys.Extensions.Core.dll</HintPath>
     </Reference>
     <Reference Include="Genesys.Extensions.Standard, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <HintPath>..\packages\Genesys.Extensions.Standard.3.17.8.514\lib\net46\Genesys.Extensions.Standard.dll</HintPath>
+      <HintPath>..\packages\Genesys.Extensions.Standard.3.17.11.40\lib\net46\Genesys.Extensions.Standard.dll</HintPath>
     </Reference>
     <Reference Include="Genesys.Extras.Core, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <HintPath>..\packages\Genesys.Extensions.Core.3.17.8.514\lib\net46\Genesys.Extras.Core.dll</HintPath>
+      <HintPath>..\packages\Genesys.Extensions.Core.3.17.11.40\lib\net46\Genesys.Extras.Core.dll</HintPath>
     </Reference>
     <Reference Include="Genesys.Extras.Standard, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <HintPath>..\packages\Genesys.Extensions.Standard.3.17.8.514\lib\net46\Genesys.Extras.Standard.dll</HintPath>
+      <HintPath>..\packages\Genesys.Extensions.Standard.3.17.11.40\lib\net46\Genesys.Extras.Standard.dll</HintPath>
     </Reference>
-    <Reference Include="Genesys.Framework.DataAccess, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Genesys.Framework.DataAccess.3.17.8.532\lib\net46\Genesys.Framework.DataAccess.dll</HintPath>
+    <Reference Include="Genesys.Framework.DataAccess, Version=3.17.11.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
+      <HintPath>..\packages\Genesys.Framework.DataAccess.3.17.11.42\lib\net46\Genesys.Framework.DataAccess.dll</HintPath>
     </Reference>
-    <Reference Include="Genesys.Framework.Interfaces, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Genesys.Framework.Interfaces.3.17.8.532\lib\net46\Genesys.Framework.Interfaces.dll</HintPath>
+    <Reference Include="Genesys.Framework.Interfaces, Version=3.17.11.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
+      <HintPath>..\packages\Genesys.Framework.Interfaces.3.17.11.42\lib\net46\Genesys.Framework.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Genesys.Framework.Models, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Genesys.Framework.Models.3.17.8.510\lib\net46\Genesys.Framework.Models.dll</HintPath>
+    <Reference Include="Genesys.Framework.Models, Version=3.17.11.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
+      <HintPath>..\packages\Genesys.Framework.Models.3.17.11.42\lib\net46\Genesys.Framework.Models.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.AspNet.Identity.Owin">

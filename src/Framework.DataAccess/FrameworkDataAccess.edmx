@@ -10,6 +10,12 @@ warning 6002: The table/view 'FrameworkData.EntityCode.CustomerInfo' does not ha
         <EntityType Name="CustomerInfo">
           <Key>
             <PropertyRef Name="ID" />
+            
+            
+            
+            
+            
+            
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="Key" Type="uniqueidentifier" Nullable="false" />
@@ -28,6 +34,10 @@ warning 6002: The table/view 'FrameworkData.EntityCode.CustomerType' does not ha
         <EntityType Name="CustomerType">
           <Key>
             <PropertyRef Name="ID" />
+            
+            
+            
+            
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Key" Type="uniqueidentifier" Nullable="false" />

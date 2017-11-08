@@ -28,7 +28,7 @@ using Genesys.Extras.Configuration;
 using System.Threading.Tasks;
 using Framework.DataAccess;
 
-namespace Framework.Tests
+namespace Framework.Test
 {
     /// <summary>
     /// Test Genesys Framework for Web API endpoints
@@ -60,8 +60,7 @@ namespace Framework.Tests
             var request = new HttpRequestGet<CustomerModel>(urlCustomer.AddLast("/") + idToGet.ToString());
 
             var responseData = await request.SendAsync();
-            Assert.IsTrue(responseData.ID != TypeExtension.DefaultInteger);
-            Assert.IsTrue(responseData.Key != TypeExtension.DefaultGuid);
+            Assert.IsTrue(!responseData.IsNew);
         }
 
         /// <summary>
@@ -77,9 +76,7 @@ namespace Framework.Tests
             customerToCreate.Fill(customerTestData[Arithmetic.Random(1, customerTestData.Count)]);
             var request = new HttpRequestPut<CustomerModel>(url, customerToCreate);
             customerToCreate = await request.SendAsync();
-            Assert.IsTrue(customerToCreate.ID != TypeExtension.DefaultInteger);
-            Assert.IsTrue(customerToCreate.Key != TypeExtension.DefaultGuid);
-
+            Assert.IsTrue(!customerToCreate.IsNew);
             recycleBin.Add(customerToCreate.ID);
         }
 
@@ -99,15 +96,14 @@ namespace Framework.Tests
             var url = new Uri(urlCustomer.AddLast("/") + idToGet.ToStringSafe());
             var requestGet = new HttpRequestGet<CustomerModel>(url);
             responseData = await requestGet.SendAsync();
-            Assert.IsTrue(responseData.ID != TypeExtension.DefaultInteger);
-            Assert.IsTrue(responseData.Key != TypeExtension.DefaultGuid);
+            Assert.IsTrue(!responseData.IsNew);
 
             var testKey = Guid.NewGuid().ToString();
             responseData.FirstName = responseData.FirstName.AddLast(testKey);
             var request = new HttpRequestPost<CustomerModel>(urlCustomer.TryParseUri(), responseData);
             responseData = await request.SendAsync();
-            Assert.IsTrue(responseData.ID != TypeExtension.DefaultInteger);
-            Assert.IsTrue(responseData.FirstName.Contains(testKey) == true);
+            Assert.IsTrue(!responseData.IsNew);
+            Assert.IsTrue(responseData.FirstName.Contains(testKey));
         }
 
         /// <summary>
@@ -117,19 +113,19 @@ namespace Framework.Tests
         [TestMethod()]
         public async Task Endpoints_Framework_WebAPI_CustomerDelete()
         {
-            CustomerModel responseData = new CustomerModel();
+            var responseData = new CustomerModel();
             var urlCustomer = new ConfigurationManagerFull().AppSettingValue("MyWebService").AddLast("/Customer");
 
             await this.Endpoints_Framework_WebAPI_CustomerPut();
             var idToDelete = recycleBin.Count() > 0 ? recycleBin[0] : TypeExtension.DefaultInteger;
 
-            var requestDelete = new HttpRequestDelete<CustomerModel>(urlCustomer.AddLast("/") + idToDelete.ToString());
-            responseData = await requestDelete.SendAsync();
+            var requestDelete = new HttpRequestDelete(urlCustomer.AddLast("/") + idToDelete.ToString());
+            await requestDelete.SendAsync();
+            Assert.IsTrue(requestDelete.Response.IsSuccessStatusCode);
 
             var requestGet = new HttpRequestGet<CustomerModel>(urlCustomer);
-            responseData = await requestDelete.SendAsync();
-            Assert.IsTrue(responseData.ID == TypeExtension.DefaultInteger);
-            Assert.IsTrue(responseData.Key == TypeExtension.DefaultGuid);
+            responseData = await requestGet.SendAsync();
+            Assert.IsTrue(responseData.IsNew);            
         }
 
         /// <summary>

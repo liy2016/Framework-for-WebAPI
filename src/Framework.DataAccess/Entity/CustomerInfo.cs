@@ -40,7 +40,7 @@ namespace Framework.DataAccess
         public CustomerInfo()
             : base()
         {
-            this.CustomerTypeKey = CustomerType.Types.Standard;
+            CustomerTypeKey = CustomerType.Types.Standard;
         }
 
         /// <summary>
@@ -84,9 +84,9 @@ namespace Framework.DataAccess
         public CustomerInfo Save()
         {
             // Ensure data does not contain cross site scripting injection HTML/Js/SQL
-            this.FirstName = new HtmlUnsafeCleanser(this.FirstName).Cleanse();
-            this.MiddleName = new HtmlUnsafeCleanser(this.MiddleName).Cleanse();
-            this.LastName = new HtmlUnsafeCleanser(this.LastName).Cleanse();
+            FirstName = new HtmlUnsafeCleanser(FirstName).Cleanse();
+            MiddleName = new HtmlUnsafeCleanser(MiddleName).Cleanse();
+            LastName = new HtmlUnsafeCleanser(LastName).Cleanse();
             return base.Update();
         }
 
@@ -99,9 +99,9 @@ namespace Framework.DataAccess
         {
             base.ActivityContextID = activity.ActivityContextID;
             // Ensure data does not contain cross site scripting injection HTML/Js/SQL
-            this.FirstName = new HtmlUnsafeCleanser(this.FirstName).Cleanse();
-            this.MiddleName = new HtmlUnsafeCleanser(this.MiddleName).Cleanse();
-            this.LastName = new HtmlUnsafeCleanser(this.LastName).Cleanse();
+            FirstName = new HtmlUnsafeCleanser(FirstName).Cleanse();
+            MiddleName = new HtmlUnsafeCleanser(MiddleName).Cleanse();
+            LastName = new HtmlUnsafeCleanser(LastName).Cleanse();
             return base.Update();
         }
 

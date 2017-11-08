@@ -46,23 +46,23 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Genesys.Extensions.Core">
-      <HintPath>..\packages\Genesys.Extensions.Core.3.17.8.514\lib\net46\Genesys.Extensions.Core.dll</HintPath>
+    <Reference Include="Genesys.Extensions.Core, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
+      <HintPath>..\packages\Genesys.Extensions.Core.3.17.11.40\lib\net46\Genesys.Extensions.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Genesys.Extensions.Standard">
-      <HintPath>..\packages\Genesys.Extensions.Standard.3.17.8.514\lib\net46\Genesys.Extensions.Standard.dll</HintPath>
+    <Reference Include="Genesys.Extensions.Standard, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
+      <HintPath>..\packages\Genesys.Extensions.Standard.3.17.11.40\lib\net46\Genesys.Extensions.Standard.dll</HintPath>
     </Reference>
-    <Reference Include="Genesys.Extras.Core">
-      <HintPath>..\packages\Genesys.Extensions.Core.3.17.8.514\lib\net46\Genesys.Extras.Core.dll</HintPath>
+    <Reference Include="Genesys.Extras.Core, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
+      <HintPath>..\packages\Genesys.Extensions.Core.3.17.11.40\lib\net46\Genesys.Extras.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Genesys.Extras.Standard">
-      <HintPath>..\packages\Genesys.Extensions.Standard.3.17.8.514\lib\net46\Genesys.Extras.Standard.dll</HintPath>
+    <Reference Include="Genesys.Extras.Standard, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
+      <HintPath>..\packages\Genesys.Extensions.Standard.3.17.11.40\lib\net46\Genesys.Extras.Standard.dll</HintPath>
     </Reference>
-    <Reference Include="Genesys.Framework.DataAccess, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <HintPath>..\packages\Genesys.Framework.DataAccess.3.17.8.532\lib\net46\Genesys.Framework.DataAccess.dll</HintPath>
+    <Reference Include="Genesys.Framework.DataAccess, Version=3.17.11.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
+      <HintPath>..\packages\Genesys.Framework.DataAccess.3.17.11.42\lib\net46\Genesys.Framework.DataAccess.dll</HintPath>
     </Reference>
-    <Reference Include="Genesys.Framework.Interfaces, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <HintPath>..\packages\Genesys.Framework.Interfaces.3.17.8.532\lib\net46\Genesys.Framework.Interfaces.dll</HintPath>
+    <Reference Include="Genesys.Framework.Interfaces, Version=3.17.11.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
+      <HintPath>..\packages\Genesys.Framework.Interfaces.3.17.11.42\lib\net46\Genesys.Framework.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -90,11 +90,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FrameworkDataAccess.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="FrameworkDataAccess.cs">
+    <None Include="FrameworkDataAccess.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FrameworkDataAccess.tt</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="FrameworkDataAccess.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

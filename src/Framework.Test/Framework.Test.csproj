@@ -49,25 +49,25 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Genesys.Extensions.Core, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <HintPath>..\packages\Genesys.Extensions.Core.3.17.8.514\lib\net46\Genesys.Extensions.Core.dll</HintPath>
+      <HintPath>..\packages\Genesys.Extensions.Core.3.17.11.40\lib\net46\Genesys.Extensions.Core.dll</HintPath>
     </Reference>
     <Reference Include="Genesys.Extensions.Standard, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <HintPath>..\packages\Genesys.Extensions.Standard.3.17.8.514\lib\net46\Genesys.Extensions.Standard.dll</HintPath>
+      <HintPath>..\packages\Genesys.Extensions.Standard.3.17.11.40\lib\net46\Genesys.Extensions.Standard.dll</HintPath>
     </Reference>
     <Reference Include="Genesys.Extras.Core, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <HintPath>..\packages\Genesys.Extensions.Core.3.17.8.514\lib\net46\Genesys.Extras.Core.dll</HintPath>
+      <HintPath>..\packages\Genesys.Extensions.Core.3.17.11.40\lib\net46\Genesys.Extras.Core.dll</HintPath>
     </Reference>
     <Reference Include="Genesys.Extras.Standard, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <HintPath>..\packages\Genesys.Extensions.Standard.3.17.8.514\lib\net46\Genesys.Extras.Standard.dll</HintPath>
+      <HintPath>..\packages\Genesys.Extensions.Standard.3.17.11.40\lib\net46\Genesys.Extras.Standard.dll</HintPath>
     </Reference>
-    <Reference Include="Genesys.Framework.DataAccess">
-      <HintPath>..\packages\Genesys.Framework.DataAccess.3.17.8.532\lib\net46\Genesys.Framework.DataAccess.dll</HintPath>
+    <Reference Include="Genesys.Framework.DataAccess, Version=3.17.11.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
+      <HintPath>..\packages\Genesys.Framework.DataAccess.3.17.11.42\lib\net46\Genesys.Framework.DataAccess.dll</HintPath>
     </Reference>
-    <Reference Include="Genesys.Framework.Interfaces">
-      <HintPath>..\packages\Genesys.Framework.Interfaces.3.17.8.532\lib\net46\Genesys.Framework.Interfaces.dll</HintPath>
+    <Reference Include="Genesys.Framework.Interfaces, Version=3.17.11.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
+      <HintPath>..\packages\Genesys.Framework.Interfaces.3.17.11.42\lib\net46\Genesys.Framework.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Genesys.Framework.Models">
-      <HintPath>..\packages\Genesys.Framework.Models.3.17.8.510\lib\net46\Genesys.Framework.Models.dll</HintPath>
+    <Reference Include="Genesys.Framework.Models, Version=3.17.11.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
+      <HintPath>..\packages\Genesys.Framework.Models.3.17.11.42\lib\net46\Genesys.Framework.Models.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -90,6 +90,8 @@
   <ItemGroup>
     <Compile Include="Activity\ActivityLoggerTests.cs" />
     <Compile Include="Activity\ExceptionLoggerTests.cs" />
+    <Compile Include="Application\ITestApplication.cs" />
+    <Compile Include="Application\TestApplication.cs" />
     <Compile Include="Data\ConnectionStringNameAttributeTests.cs" />
     <Compile Include="Data\DataAccessBehaviorAttributeTests.cs" />
     <Compile Include="Data\DatabaseSchemaNameAttributeTests.cs" />
@@ -99,9 +101,11 @@
     <Compile Include="Data\Test.Data.Tables.cs" />
     <Compile Include="Endpoints\Framework-for-WebApi-Tests.cs" />
     <Compile Include="Entity\CrudEntityTests.cs" />
+    <Compile Include="Model\ViewModelTests.cs" />
     <Compile Include="Model\CustomerSearchModelTests.cs" />
     <Compile Include="Model\CustomerModelTests.cs" />
     <Compile Include="Entity\CustomerEntityTests.cs" />
+    <Compile Include="Model\TestViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\JsonSerializerGenericTests.cs" />
     <Compile Include="Serialization\JsonSerializerTests.cs" />

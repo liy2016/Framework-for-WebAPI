@@ -29,22 +29,22 @@ namespace Framework.Entity
     public interface ICustomer : IID
     {
         /// <summary>
-        /// FirstName of customer
+        /// FirstName of customer entity
         /// </summary>
         string FirstName { get; set; }
 
         /// <summary>
-        /// MiddleName of customer
+        /// MiddleName of customer entity
         /// </summary>
         string MiddleName { get; set; }
 
         /// <summary>
-        /// LastName of customer
+        /// LastName of customer entity
         /// </summary>
         string LastName { get; set; }
 
         /// <summary>
-        /// BirthDate of customer
+        /// BirthDate of customer entity
         /// </summary>
         DateTime BirthDate { get; set; }
 

@@ -1,9 +1,20 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="CustomerController.cs" company="Genesys Source">
 //      Copyright (c) 2017 Genesys Source. All rights reserved.
-//      All rights are reserved. Reproduction or transmission in whole or in part, in
-//      any form or by any means, electronic, mechanical or otherwise, is prohibited
-//      without the prior written consent of the copyright owner.
+//      Licensed to the Apache Software Foundation (ASF) under one or more 
+//      contributor license agreements.  See the NOTICE file distributed with 
+//      this work for additional information regarding copyright ownership.
+//      The ASF licenses this file to You under the Apache License, Version 2.0 
+//      (the 'License'); you may not use this file except in compliance with 
+//      the License.  You may obtain a copy of the License at 
+//       
+//        http://www.apache.org/licenses/LICENSE-2.0 
+//       
+//       Unless required by applicable law or agreed to in writing, software  
+//       distributed under the License is distributed on an 'AS IS' BASIS, 
+//       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  
+//       See the License for the specific language governing permissions and  
+//       limitations under the License. 
 // </copyright>
 //-----------------------------------------------------------------------
 
@@ -36,16 +47,14 @@ namespace Framework.WebServices
         public CustomerModel Get(string id)
         {
             var reader = ReadOnlyDatabase<CustomerInfo>.Construct();
-            CustomerInfo customer = new CustomerInfo();
-            CustomerModel model = new CustomerModel();
+            var customer = new CustomerInfo();
 
-            customer = reader.GetByID(id.TryParseInt32());
-            if (customer.ID != TypeExtension.DefaultInteger)
-            {
-                model.Fill(customer); // Go back to model for transport
-            }
+            if (id.IsInteger())
+                customer = reader.GetByID(id.TryParseInt32());
+            else
+                customer = reader.GetByKey(id.TryParseGuid());
 
-            return model;
+            return customer.CastOrFill<CustomerModel>();
         }
 
         /// <summary>
@@ -55,13 +64,12 @@ namespace Framework.WebServices
         [HttpPut()]
         public CustomerModel Put(CustomerModel model)
         {
-            CustomerInfo customer = new CustomerInfo();
+            var customer = new CustomerInfo();
 
             customer.Fill(model);
-            customer.Save(); // Save screen changes to database.
-            model.Fill(customer);  // Go back to model for transport
+            customer.Save();
 
-            return model;
+            return customer.CastOrFill<CustomerModel>();
         }
 
         /// <summary>
@@ -72,15 +80,12 @@ namespace Framework.WebServices
         [HttpPost()]
         public CustomerModel Post(CustomerModel model)
         {
-            var reader = ReadOnlyDatabase<CustomerInfo>.Construct();
-            CustomerInfo customer = new CustomerInfo();
+            var customer = new CustomerInfo();
 
-            customer = reader.GetByID(model.ID);
-            customer.Fill(model); // Overlay all screen edits on-top of the data-access-object, to preserve untouched original data
+            customer.Fill(model);
             customer.Save();
-            model.Fill(customer); // Go back to model for transport
 
-            return model;
+            return customer.CastOrFill<CustomerModel>();
         }
 
         /// <summary>
@@ -92,15 +97,17 @@ namespace Framework.WebServices
         public CustomerModel Delete(string id)
         {
             var reader = ReadOnlyDatabase<CustomerInfo>.Construct();
-            CustomerInfo customer = new CustomerInfo();
+            var customer = new CustomerInfo();
             CustomerModel model = new CustomerModel();
-
-            customer = reader.GetByID(id.TryParseInt32());
+            
+            if(id.IsInteger())
+                customer = reader.GetByID(id.TryParseInt32());
+            else
+                customer = reader.GetByKey(id.TryParseGuid());
             customer.Delete();
-            customer = reader.GetByID(id.TryParseInt32()); // Verify delete, success returns empty object
-            model.Fill(customer);
+            customer = reader.GetByID(id.TryParseInt32());
 
-            return model;
+            return customer.CastOrFill<CustomerModel>();
         }
     }
 }
