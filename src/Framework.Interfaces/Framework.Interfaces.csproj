@@ -50,7 +50,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
-    <None Include="PostBuild.bat" />
     <None Include="PostBuild.Debug.bat" />
     <None Include="PostBuild.Release.bat" />
     <None Include="PreBuild.Debug.bat" />
