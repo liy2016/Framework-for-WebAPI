@@ -37,7 +37,27 @@ namespace Framework.Test
     [TestClass()]
     public class Endpoints_Framework_for_WebApi
     {
-        private List<int> recycleBin = new List<int>();
+        private static readonly object LockObject = new object();
+        private static volatile List<int> _recycleBin = null;
+        /// <summary>
+        /// Singleton for recycle bin
+        /// </summary>
+        private static List<int> RecycleBin
+        {
+            get
+            {
+                if (_recycleBin != null) return _recycleBin;
+                lock (LockObject)
+                {
+                    if (_recycleBin == null)
+                    {
+                        _recycleBin = new List<int>();
+                    }
+                }
+                return _recycleBin;
+            }
+        }
+
         private List<CustomerModel> customerTestData = new List<CustomerModel>()
         {
             new CustomerModel() {FirstName = "John", MiddleName = "Adam", LastName = "Doe", BirthDate = DateTime.Today.AddYears(Arithmetic.Random(2).Negate()) },
@@ -56,7 +76,7 @@ namespace Framework.Test
         {
             var urlCustomer = new ConfigurationManagerFull().AppSettingValue("MyWebService").AddLast("/Customer");
             await this.Endpoints_Framework_WebAPI_CustomerPut();
-            var idToGet = (recycleBin.Count() > 0 ? recycleBin[0] : TypeExtension.DefaultInteger).ToString();
+            var idToGet = (Endpoints_Framework_for_WebApi.RecycleBin.Count() > 0 ? Endpoints_Framework_for_WebApi.RecycleBin[0] : TypeExtension.DefaultInteger).ToString();
             var request = new HttpRequestGet<CustomerModel>(urlCustomer.AddLast("/") + idToGet.ToString());
 
             var responseData = await request.SendAsync();
@@ -77,7 +97,7 @@ namespace Framework.Test
             var request = new HttpRequestPut<CustomerModel>(url, customerToCreate);
             customerToCreate = await request.SendAsync();
             Assert.IsTrue(!customerToCreate.IsNew);
-            recycleBin.Add(customerToCreate.ID);
+            Endpoints_Framework_for_WebApi.RecycleBin.Add(customerToCreate.ID);
         }
 
         /// <summary>
@@ -91,7 +111,7 @@ namespace Framework.Test
             var urlCustomer = new ConfigurationManagerFull().AppSettingValue("MyWebService").AddLast("/Customer");
 
             await this.Endpoints_Framework_WebAPI_CustomerPut();
-            var idToGet = recycleBin.Count() > 0 ? recycleBin[0] : TypeExtension.DefaultInteger;
+            var idToGet = Endpoints_Framework_for_WebApi.RecycleBin.Count() > 0 ? Endpoints_Framework_for_WebApi.RecycleBin[0] : TypeExtension.DefaultInteger;
 
             var url = new Uri(urlCustomer.AddLast("/") + idToGet.ToStringSafe());
             var requestGet = new HttpRequestGet<CustomerModel>(url);
@@ -117,7 +137,7 @@ namespace Framework.Test
             var urlCustomer = new ConfigurationManagerFull().AppSettingValue("MyWebService").AddLast("/Customer");
 
             await this.Endpoints_Framework_WebAPI_CustomerPut();
-            var idToDelete = recycleBin.Count() > 0 ? recycleBin[0] : TypeExtension.DefaultInteger;
+            var idToDelete = Endpoints_Framework_for_WebApi.RecycleBin.Count() > 0 ? Endpoints_Framework_for_WebApi.RecycleBin[0] : TypeExtension.DefaultInteger;
 
             var requestDelete = new HttpRequestDelete(urlCustomer.AddLast("/") + idToDelete.ToString());
             await requestDelete.SendAsync();
@@ -146,9 +166,9 @@ namespace Framework.Test
         /// Cleanup all data
         /// </summary>
         [ClassCleanupAttribute()]
-        private void Cleanup()
+        public static void Cleanup()
         {
-            foreach (int item in recycleBin)
+            foreach (int item in Endpoints_Framework_for_WebApi.RecycleBin)
             {
                 CustomerInfo.GetByID(item).Delete();
             }

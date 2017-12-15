@@ -31,7 +31,26 @@ namespace Framework.Test
     [TestClass()]
     public class SaveableDatabaseTests
     {
-        List<int> recycleBin = new List<int>();
+        private static readonly object LockObject = new object();
+        private static volatile List<int> _recycleBin = null;
+        /// <summary>
+        /// Singleton for recycle bin
+        /// </summary>
+        private static List<int> RecycleBin
+        {
+            get
+            {
+                if (_recycleBin != null) return _recycleBin;
+                lock (LockObject)
+                {
+                    if (_recycleBin == null)
+                    {
+                        _recycleBin = new List<int>();
+                    }
+                }
+                return _recycleBin;
+            }
+        }
         List<CustomerInfo> testEntities = new List<CustomerInfo>()
         {
             new CustomerInfo() {FirstName = "John", MiddleName = "Adam", LastName = "Doe", BirthDate = DateTime.Today.AddYears(Arithmetic.Random(2).Negate()) },
@@ -198,7 +217,7 @@ namespace Framework.Test
             Assert.IsTrue(testEntity.Key != TypeExtension.DefaultGuid);
 
             // Cleanup
-            recycleBin.Add(testEntity.ID);
+            SaveableDatabaseTests.RecycleBin.Add(testEntity.ID);
         }
 
         /// <summary>
@@ -271,7 +290,7 @@ namespace Framework.Test
             Assert.IsTrue(testEntity.Key == TypeExtension.DefaultGuid);
 
             // Add to recycle bin for cleanup
-            recycleBin.Add(testEntity.ID);
+            SaveableDatabaseTests.RecycleBin.Add(testEntity.ID);
         }
 
         /// <summary>
@@ -313,12 +332,12 @@ namespace Framework.Test
         /// Cleanup all data
         /// </summary>
         [ClassCleanupAttribute()]
-        private void Cleanup()
+        public static void Cleanup()
         {
             var saver = SaveableDatabase<CustomerInfo>.Construct();
             var toDelete = new CustomerInfo();
 
-            foreach (int item in recycleBin)
+            foreach (int item in SaveableDatabaseTests.RecycleBin)
             {
                 toDelete = saver.GetAll().Where(x => x.ID == item).FirstOrDefaultSafe();
                 saver.Delete(toDelete);

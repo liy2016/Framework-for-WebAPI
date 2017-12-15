@@ -35,9 +35,29 @@ namespace Framework.Test
     /// </summary>
     /// <remarks></remarks>
     [TestClass()]
-    public class CustomerViewModelTests
+    public class ViewModelTests
     {
-        private List<int> recycleBin = new List<int>();
+        private static readonly object LockObject = new object();
+        private static volatile List<int> _recycleBin = null;
+        /// <summary>
+        /// Singleton for recycle bin
+        /// </summary>
+        private static List<int> RecycleBin
+        {
+            get
+            {
+                if (_recycleBin != null) return _recycleBin;
+                lock (LockObject)
+                {
+                    if (_recycleBin == null)
+                    {
+                        _recycleBin = new List<int>();
+                    }
+                }
+                return _recycleBin;
+            }
+        }
+
         private List<CustomerModel> customerTestData = new List<CustomerModel>()
         {
             new CustomerModel() {FirstName = "John", MiddleName = "Adam", LastName = "Doe", BirthDate = DateTime.Today.AddYears(Arithmetic.Random(2).Negate()) },
@@ -59,7 +79,7 @@ namespace Framework.Test
 
             // Create test record
             await this.ViewModel_CRUD_Create();
-            var idToTest = recycleBin.Count() > 0 ? recycleBin[0] : TypeExtension.DefaultInteger;
+            var idToTest = ViewModelTests.RecycleBin.Count() > 0 ? ViewModelTests.RecycleBin[0] : TypeExtension.DefaultInteger;
             
             // Verify update success
             customer = await viewModel.ReadAsync(idToTest);
@@ -84,7 +104,7 @@ namespace Framework.Test
             Assert.IsTrue(customer.ID != TypeExtension.DefaultInteger);
             Assert.IsTrue(customer.Key != TypeExtension.DefaultGuid);
 
-            recycleBin.Add(customer.ID);
+            ViewModelTests.RecycleBin.Add(customer.ID);
         }
 
         /// <summary>
@@ -99,7 +119,7 @@ namespace Framework.Test
 
             // Create test record
             await this.ViewModel_CRUD_Create();
-            var idToTest = recycleBin.Count() > 0 ? recycleBin[0] : TypeExtension.DefaultInteger;            
+            var idToTest = ViewModelTests.RecycleBin.Count() > 0 ? ViewModelTests.RecycleBin[0] : TypeExtension.DefaultInteger;            
             // Read test record
             customer = await viewModel.ReadAsync(idToTest);            
             // Update test record
@@ -128,7 +148,7 @@ namespace Framework.Test
 
             // Create test record
             await this.ViewModel_CRUD_Create();
-            var idToTest = recycleBin.Count() > 0 ? recycleBin[0] : TypeExtension.DefaultInteger;
+            var idToTest = ViewModelTests.RecycleBin.Count() > 0 ? ViewModelTests.RecycleBin[0] : TypeExtension.DefaultInteger;
 
             // Test
             customer = await viewModel.ReadAsync(idToTest);
@@ -152,9 +172,9 @@ namespace Framework.Test
         /// Cleanup all data
         /// </summary>
         [ClassCleanupAttribute()]
-        private void Cleanup()
+        public static void Cleanup()
         {
-            foreach (int item in recycleBin)
+            foreach (int item in ViewModelTests.RecycleBin)
             {
                 CustomerInfo.GetByID(item).Delete();
             }

@@ -17,11 +17,11 @@
 //       limitations under the License. 
 // </copyright>
 //-----------------------------------------------------------------------
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Genesys.Framework.Activity;
-using System.Linq;
-using Genesys.Extensions;
 using Framework.Test.Data;
+using Genesys.Extensions;
+using Genesys.Framework.Activity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace Framework.Test
 {

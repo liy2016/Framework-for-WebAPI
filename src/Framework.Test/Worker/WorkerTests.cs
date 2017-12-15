@@ -17,13 +17,13 @@
 //       limitations under the License. 
 // </copyright>
 //-----------------------------------------------------------------------
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using Genesys.Extensions;
 using Genesys.Extras.Serialization;
 using Genesys.Framework.Name;
 using Genesys.Framework.Session;
 using Genesys.Framework.Worker;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Framework.Test
 {

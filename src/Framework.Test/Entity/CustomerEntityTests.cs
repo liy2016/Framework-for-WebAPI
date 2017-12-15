@@ -33,7 +33,27 @@ namespace Framework.Test
     [TestClass()]
     public class CustomerEntityTests
     {
-        List<int> recycleBin = new List<int>();
+        private static readonly object LockObject = new object();
+        private static volatile List<int> _recycleBin = null;
+        /// <summary>
+        /// Singleton for recycle bin
+        /// </summary>
+        private static List<int> RecycleBin
+        {
+            get
+            {
+                if (_recycleBin != null) return _recycleBin;
+                lock (LockObject)
+                {
+                    if (_recycleBin == null)
+                    {
+                        _recycleBin = new List<int>();
+                    }
+                }
+                return _recycleBin;
+            }
+        }
+
         List<CustomerInfo> testEntities = new List<CustomerInfo>()
         {
             new CustomerInfo() {FirstName = "John", MiddleName = "Adam", LastName = "Doe", BirthDate = DateTime.Today.AddYears(Arithmetic.Random(2).Negate()) },
@@ -69,7 +89,7 @@ namespace Framework.Test
             Assert.IsTrue(dbCustomer.ID == resultCustomer.ID);
             Assert.IsTrue(dbCustomer.Key == resultCustomer.Key);
 
-            recycleBin.Add(newCustomer.ID);
+            CustomerEntityTests.RecycleBin.Add(newCustomer.ID);
         }
         
         /// <summary>
@@ -82,7 +102,7 @@ namespace Framework.Test
             var lastID = TypeExtension.DefaultInteger;
 
             Entity_CustomerInfo_Create();
-            lastID = recycleBin.Last();
+            lastID = CustomerEntityTests.RecycleBin.Last();
 
             dbCustomer = dbCustomer.Read(x => x.ID == lastID).FirstOrDefaultSafe();
             Assert.IsTrue(!dbCustomer.IsNew);
@@ -105,7 +125,7 @@ namespace Framework.Test
             var originalKey = TypeExtension.DefaultGuid;
 
             Entity_CustomerInfo_Create();
-            lastID = recycleBin.Last();
+            lastID = CustomerEntityTests.RecycleBin.Last();
 
             dbCustomer = dbCustomer.Read(x => x.ID == lastID).FirstOrDefaultSafe();
             originalID = dbCustomer.ID;
@@ -143,7 +163,7 @@ namespace Framework.Test
             var originalKey = TypeExtension.DefaultGuid;
 
             Entity_CustomerInfo_Create();
-            lastID = recycleBin.Last();
+            lastID = CustomerEntityTests.RecycleBin.Last();
 
             dbCustomer = dbCustomer.Read(x => x.ID == lastID).FirstOrDefaultSafe();
             originalID = dbCustomer.ID;
@@ -303,10 +323,10 @@ namespace Framework.Test
         /// Cleanup all data
         /// </summary>
         [ClassCleanupAttribute()]
-        private void Cleanup()
+        public static void Cleanup()
         {
             var reader = ReadOnlyDatabase<CustomerInfo>.Construct();
-            foreach (int item in recycleBin)
+            foreach (int item in CustomerEntityTests.RecycleBin)
             {
                 reader.GetByID(item).Delete();
             }

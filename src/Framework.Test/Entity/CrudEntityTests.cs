@@ -19,22 +19,39 @@
 //-----------------------------------------------------------------------
 using Framework.DataAccess;
 using Genesys.Extensions;
-using Genesys.Extras.Configuration;
 using Genesys.Extras.Mathematics;
-using Genesys.Extras.Net;
 using Genesys.Framework.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Framework.Test
 {
     [TestClass()]
     public class CrudEntityTests
     {
-        List<int> recycleBin = new List<int>();
+        private static readonly object LockObject = new object();
+        private static volatile List<int> _recycleBin = null;
+        /// <summary>
+        /// Singleton for recycle bin
+        /// </summary>
+        private static List<int> RecycleBin
+        {
+            get
+            {
+                if (_recycleBin != null) return _recycleBin;
+                lock (LockObject)
+                {
+                    if (_recycleBin == null)
+                    {
+                        _recycleBin = new List<int>();
+                    }
+                }
+                return _recycleBin;
+            }
+        }
+
         List<CustomerInfo> testEntities = new List<CustomerInfo>()
         {
             new CustomerInfo() {FirstName = "John", MiddleName = "Adam", LastName = "Doe", BirthDate = DateTime.Today.AddYears(Arithmetic.Random(2).Negate()) },
@@ -70,7 +87,7 @@ namespace Framework.Test
             Assert.IsTrue(dbCustomer.ID == resultCustomer.ID && resultCustomer.ID == newCustomer.ID);
             Assert.IsTrue(dbCustomer.Key == resultCustomer.Key && resultCustomer.Key == newCustomer.Key);
 
-            recycleBin.Add(newCustomer.ID);
+            CrudEntityTests.RecycleBin.Add(newCustomer.ID);
         }
 
         /// <summary>
@@ -83,7 +100,7 @@ namespace Framework.Test
             var lastID = TypeExtension.DefaultInteger;
 
             Entity_CrudEntity_Create();
-            lastID = recycleBin.Last();
+            lastID = CrudEntityTests.RecycleBin.Last();
 
             dbCustomer = dbCustomer.Read(x => x.ID == lastID).FirstOrDefaultSafe();
             Assert.IsTrue(!dbCustomer.IsNew);
@@ -106,7 +123,7 @@ namespace Framework.Test
             var originalKey = TypeExtension.DefaultGuid;
 
             Entity_CrudEntity_Create();
-            lastID = recycleBin.Last();
+            lastID = CrudEntityTests.RecycleBin.Last();
 
             dbCustomer = dbCustomer.Read(x => x.ID == lastID).FirstOrDefaultSafe();
             originalID = dbCustomer.ID;
@@ -144,7 +161,7 @@ namespace Framework.Test
             var originalKey = TypeExtension.DefaultGuid;
 
             Entity_CrudEntity_Create();
-            lastID = recycleBin.Last();
+            lastID = CrudEntityTests.RecycleBin.Last();
 
             dbCustomer = dbCustomer.Read(x => x.ID == lastID).FirstOrDefaultSafe();
             originalID = dbCustomer.ID;
@@ -167,10 +184,10 @@ namespace Framework.Test
         /// Cleanup all data
         /// </summary>
         [ClassCleanupAttribute()]
-        private void Cleanup()
+        public static void Cleanup()
         {
             var db = SaveableDatabase<CustomerInfo>.Construct();
-            foreach (int item in recycleBin)
+            foreach (int item in CrudEntityTests.RecycleBin)
             {
                 db.GetByID(item).Delete();
             }

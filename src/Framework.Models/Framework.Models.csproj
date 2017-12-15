@@ -61,17 +61,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Genesys.Extensions.Core, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <HintPath>..\packages\Genesys.Extensions.Core.3.17.11.40\lib\portable-net451+win81+wpa81\Genesys.Extensions.Core.dll</HintPath>
+    <Reference Include="Genesys.Extensions.Core, Version=3.17.12.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
+      <HintPath>..\packages\Genesys.Extensions.Core.3.17.12.263\lib\portable-net451+win81+wpa81\Genesys.Extensions.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Genesys.Extras.Core, Version=3.17.7.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <HintPath>..\packages\Genesys.Extensions.Core.3.17.11.40\lib\portable-net451+win81+wpa81\Genesys.Extras.Core.dll</HintPath>
+    <Reference Include="Genesys.Extras.Core, Version=3.17.12.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
+      <HintPath>..\packages\Genesys.Extensions.Core.3.17.12.263\lib\portable-net451+win81+wpa81\Genesys.Extras.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Genesys.Framework.Interfaces, Version=3.17.11.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <HintPath>..\packages\Genesys.Framework.Interfaces.3.17.11.42\lib\portable-net451+win81+wpa81\Genesys.Framework.Interfaces.dll</HintPath>
+    <Reference Include="Genesys.Framework.Interfaces, Version=3.17.12.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
+      <HintPath>..\packages\Genesys.Framework.Interfaces.3.17.12.274\lib\portable-net451+win81+wpa81\Genesys.Framework.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Genesys.Framework.Models, Version=3.17.11.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <HintPath>..\packages\Genesys.Framework.Models.3.17.11.42\lib\portable-net451+win81+wpa81\Genesys.Framework.Models.dll</HintPath>
+    <Reference Include="Genesys.Framework.Models, Version=3.17.12.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
+      <HintPath>..\packages\Genesys.Framework.Models.3.17.12.274\lib\portable-net451+win81+wpa81\Genesys.Framework.Models.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
