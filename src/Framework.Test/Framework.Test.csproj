@@ -64,13 +64,13 @@
       <HintPath>..\packages\Genesys.Extensions.Standard.3.17.12.263\lib\net46\Genesys.Extras.Standard.dll</HintPath>
     </Reference>
     <Reference Include="Genesys.Framework.DataAccess, Version=3.17.12.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <HintPath>..\packages\Genesys.Framework.DataAccess.3.17.12.274\lib\net46\Genesys.Framework.DataAccess.dll</HintPath>
+      <HintPath>..\packages\Genesys.Framework.DataAccess.3.18.1.273\lib\net46\Genesys.Framework.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Genesys.Framework.Interfaces, Version=3.17.12.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <HintPath>..\packages\Genesys.Framework.Interfaces.3.17.12.274\lib\net46\Genesys.Framework.Interfaces.dll</HintPath>
+      <HintPath>..\packages\Genesys.Framework.Interfaces.3.18.1.273\lib\net46\Genesys.Framework.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="Genesys.Framework.Models, Version=3.17.12.0, Culture=neutral, PublicKeyToken=d7d438e664f27f82, processorArchitecture=MSIL">
-      <HintPath>..\packages\Genesys.Framework.Models.3.17.12.274\lib\net46\Genesys.Framework.Models.dll</HintPath>
+      <HintPath>..\packages\Genesys.Framework.Models.3.18.1.273\lib\net46\Genesys.Framework.Models.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.2.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ReadOnlyDatabaseTests.cs" company="Genesys Source">
+// <copyright file="DatabaseReaderTests.cs" company="Genesys Source">
 //      Copyright (c) 2017 Genesys Source. All rights reserved.
 //      Licensed to the Apache Software Foundation (ASF) under one or more 
 //      contributor license agreements.  See the NOTICE file distributed with 
@@ -26,15 +26,15 @@ using System.Linq;
 namespace Framework.Test
 {
     [TestClass()]
-    public class ReadOnlyDatabaseTests
+    public class DatabaseReaderTests
     {
         /// <summary>
-        /// Data_ReadOnlyDatabase_CountAny
+        /// Data_DatabaseReader_CountAny
         /// </summary>
         [TestMethod()]
-        public void Data_ReadOnlyDatabase_CountAny()
+        public void Data_DatabaseReader_CountAny()
         {
-            var db = ReadOnlyDatabase<CustomerType>.Construct();
+            var db = DatabaseReader<CustomerType>.Construct();
 
             // GetAll() count and any
             var resultsAll = db.GetAll();
@@ -57,23 +57,23 @@ namespace Framework.Test
         }
 
         /// <summary>s
-        /// Data_ReadOnlyDatabase_Select
+        /// Data_DatabaseReader_Select
         /// </summary>
         [TestMethod()]
-        public void Data_ReadOnlyDatabase_GetAll()
+        public void Data_DatabaseReader_GetAll()
         {
-            var typeDB = ReadOnlyDatabase<CustomerType>.Construct();
+            var typeDB = DatabaseReader<CustomerType>.Construct();
             var typeResults = typeDB.GetAll().Take(1);
             Assert.IsTrue(typeResults.Count() > 0);
         }
 
         /// <summary>
-        /// Data_ReadOnlyDatabase_GetByID
+        /// Data_DatabaseReader_GetByID
         /// </summary>
         [TestMethod()]
-        public void Data_ReadOnlyDatabase_GetByID()
+        public void Data_DatabaseReader_GetByID()
         {
-            var custData = ReadOnlyDatabase<CustomerType>.Construct();
+            var custData = DatabaseReader<CustomerType>.Construct();
             var custEntity = new CustomerType();
 
             // ByID Should return 1 record
@@ -88,12 +88,12 @@ namespace Framework.Test
         }
 
         /// <summary>
-        /// Data_ReadOnlyDatabase_GetByKey
+        /// Data_DatabaseReader_GetByKey
         /// </summary>
         [TestMethod()]
-        public void Data_ReadOnlyDatabase_GetByKey()
+        public void Data_DatabaseReader_GetByKey()
         {
-            var custData = ReadOnlyDatabase<CustomerType>.Construct();
+            var custData = DatabaseReader<CustomerType>.Construct();
 
             // ByKey Should return 1 record
             var existingKey = custData.GetAll().FirstOrDefaultSafe().Key;
@@ -102,14 +102,14 @@ namespace Framework.Test
         }
 
         /// <summary>
-        /// Data_ReadOnlyDatabase_Insert
+        /// Data_DatabaseReader_Insert
         /// </summary>
         /// <remarks></remarks>
         [TestMethod()]
-        public void Data_ReadOnlyDatabase_GetWhere()
+        public void Data_DatabaseReader_GetWhere()
         {
             // Plain EntityInfo object
-            var typeData = ReadOnlyDatabase<CustomerType>.Construct();
+            var typeData = DatabaseReader<CustomerType>.Construct();
             var testType = new CustomerType();
             var testId = typeData.GetAllExcludeDefault().FirstOrDefaultSafe().ID;
             testType = typeData.GetAll().Where(x => x.ID == testId).FirstOrDefaultSafe();
@@ -119,15 +119,15 @@ namespace Framework.Test
         }
 
         /// <summary>
-        /// ReadOnlyDatabase context and connection
+        /// DatabaseReader context and connection
         /// </summary>
         [TestMethod()]
-        public void Data_ReadOnlyDatabase_Lists()
+        public void Data_DatabaseReader_Lists()
         {
             var emptyGuid = TypeExtension.DefaultGuid;
 
             // List Type
-            var typeDB = ReadOnlyDatabase<CustomerType>.Construct();
+            var typeDB = DatabaseReader<CustomerType>.Construct();
             var typeResults = typeDB.GetAllExcludeDefault();
             Assert.IsTrue(typeResults.Count() > 0);
             Assert.IsTrue(typeResults.Any(x => x.Key == emptyGuid) == false);
@@ -135,12 +135,12 @@ namespace Framework.Test
         }
 
         /// <summary>
-        /// ReadOnlyDatabase context and connection
+        /// DatabaseReader context and connection
         /// </summary>
         [TestMethod()]
-        public void Data_ReadOnlyDatabase_Singles()
+        public void Data_DatabaseReader_Singles()
         {
-            var typeDB = ReadOnlyDatabase<CustomerType>.Construct();
+            var typeDB = DatabaseReader<CustomerType>.Construct();
             var testItem = new CustomerType();
             var emptyGuid = TypeExtension.DefaultGuid;
 

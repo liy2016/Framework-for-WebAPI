@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SaveableDatabaseTests.cs" company="Genesys Source">
+// <copyright file="DatabaseWriterTests.cs" company="Genesys Source">
 //      Copyright (c) 2017 Genesys Source. All rights reserved.
 //      Licensed to the Apache Software Foundation (ASF) under one or more 
 //      contributor license agreements.  See the NOTICE file distributed with 
@@ -21,6 +21,7 @@ using Framework.DataAccess;
 using Genesys.Extensions;
 using Genesys.Extras.Mathematics;
 using Genesys.Framework.Data;
+using Genesys.Framework.Operation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ using System.Linq;
 namespace Framework.Test
 {
     [TestClass()]
-    public class SaveableDatabaseTests
+    public class DatabaseWriterTests
     {
         private static readonly object LockObject = new object();
         private static volatile List<int> _recycleBin = null;
@@ -61,12 +62,12 @@ namespace Framework.Test
         };
 
         /// <summary>
-        /// Data_ReadOnlyDatabase_CountAny
+        /// Data_DatabaseReader_CountAny
         /// </summary>
         [TestMethod()]
-        public void Data_SaveableDatabase_CountAny()
+        public void Data_DatabaseWriter_CountAny()
         {
-            var db = SaveableDatabase<CustomerType>.Construct();
+            var db = DatabaseWriter<CustomerType>.Construct();
 
             // GetAll() count and any
             var resultsAll = db.GetAll();
@@ -89,28 +90,28 @@ namespace Framework.Test
         }
 
         /// <summary>s
-        /// Data_SaveableDatabase_Select
+        /// Data_DatabaseWriter_Select
         /// </summary>
         [TestMethod()]
-        public void Data_SaveableDatabase_GetAll()
+        public void Data_DatabaseWriter_GetAll()
         {
-            var typeDB = SaveableDatabase<CustomerType>.Construct();
+            var typeDB = DatabaseWriter<CustomerType>.Construct();
             var typeResults = typeDB.GetAll().Take(1);
             Assert.IsTrue(typeResults.Count() > 0);
 
-            this.Data_SaveableDatabase_Insert();
-            var custDB = SaveableDatabase<CustomerInfo>.Construct();
+            this.Data_DatabaseWriter_Insert();
+            var custDB = DatabaseWriter<CustomerInfo>.Construct();
             var custResults = custDB.GetAll().Take(1);
             Assert.IsTrue(custResults.Count() > 0);
         }
 
         /// <summary>
-        /// Data_SaveableDatabase_GetByID
+        /// Data_DatabaseWriter_GetByID
         /// </summary>
         [TestMethod()]
-        public void Data_SaveableDatabase_GetByID()
+        public void Data_DatabaseWriter_GetByID()
         {            
-            var custData = SaveableDatabase<CustomerInfo>.Construct();
+            var custData = DatabaseWriter<CustomerInfo>.Construct();
             var custEntity = new CustomerInfo();
             var randomID = custData.GetAll().FirstOrDefaultSafe().ID;
             var randomID2 = custData.GetAll().OrderByDescending(x => x.ID).FirstOrDefaultSafe().ID;
@@ -135,13 +136,13 @@ namespace Framework.Test
         }
 
         /// <summary>
-        /// Data_SaveableDatabase_GetByKey
+        /// Data_DatabaseWriter_GetByKey
         /// </summary>
         [TestMethod()]
-        public void Data_SaveableDatabase_GetByKey()
+        public void Data_DatabaseWriter_GetByKey()
         {
             // Should create 1 record
-            var custData = SaveableDatabase<CustomerInfo>.Construct();
+            var custData = DatabaseWriter<CustomerInfo>.Construct();
             var custCount = custData.GetAll().Count();
             Assert.IsTrue(custCount > 0);
             // ByKey Should return 1 record            
@@ -152,14 +153,14 @@ namespace Framework.Test
         }
 
         /// <summary>
-        /// Data_SaveableDatabase_Insert
+        /// Data_DatabaseWriter_Insert
         /// </summary>
         /// <remarks></remarks>
         [TestMethod()]
-        public void Data_SaveableDatabase_GetWhere()
+        public void Data_DatabaseWriter_GetWhere()
         {
             // Plain EntityInfo object
-            var testData2 = SaveableDatabase<CustomerInfo>.Construct();
+            var testData2 = DatabaseWriter<CustomerInfo>.Construct();
             var testEntity2 = new CustomerInfo();
             var testId2 = testData2.GetAllExcludeDefault().FirstOrDefaultSafe().ID;
             testEntity2 = testData2.GetAll().Where(x => x.ID == testId2).FirstOrDefaultSafe();
@@ -168,8 +169,8 @@ namespace Framework.Test
             Assert.IsTrue(testEntity2.Key != TypeExtension.DefaultGuid);
 
             // CrudEntity object
-            this.Data_SaveableDatabase_Insert();
-            var testData = SaveableDatabase<CustomerInfo>.Construct();
+            this.Data_DatabaseWriter_Insert();
+            var testData = DatabaseWriter<CustomerInfo>.Construct();
             var testEntity = new CustomerInfo();
             var testId = testData.GetAllExcludeDefault().FirstOrDefaultSafe().ID;
             testEntity = testData.GetAll().Where(x => x.ID == testId).FirstOrDefaultSafe();
@@ -179,13 +180,13 @@ namespace Framework.Test
         }
 
         /// <summary>
-        /// Data_SaveableDatabase_Insert
+        /// Data_DatabaseWriter_Insert
         /// </summary>
         /// <remarks></remarks>
         [TestMethod()]
-        public void Data_SaveableDatabase_Insert()
+        public void Data_DatabaseWriter_Insert()
         {
-            var dataStore =  SaveableDatabase<CustomerInfo>.Construct();
+            var dataStore =  DatabaseWriter<CustomerInfo>.Construct();
             var testEntity = new CustomerInfo();
             var resultEntity = new CustomerInfo();
             var oldID = TypeExtension.DefaultInteger;
@@ -202,9 +203,9 @@ namespace Framework.Test
             Assert.IsTrue(testEntity.Key == TypeExtension.DefaultGuid);
 
             // Do Insert and check passed entity and returned entity
-            resultEntity = dataStore.Save(testEntity, true);
+            dataStore = DatabaseWriter<CustomerInfo>.Construct(testEntity);
+            resultEntity = dataStore.Save(SaveBehaviors.InsertOnly);
             Assert.IsTrue(testEntity.ID != TypeExtension.DefaultInteger);
-            Assert.IsTrue(testEntity.Key != TypeExtension.DefaultGuid);
             Assert.IsTrue(resultEntity.ID != TypeExtension.DefaultInteger);
             Assert.IsTrue(resultEntity.Key != TypeExtension.DefaultGuid);
         
@@ -217,25 +218,25 @@ namespace Framework.Test
             Assert.IsTrue(testEntity.Key != TypeExtension.DefaultGuid);
 
             // Cleanup
-            SaveableDatabaseTests.RecycleBin.Add(testEntity.ID);
+            DatabaseWriterTests.RecycleBin.Add(testEntity.ID);
         }
 
         /// <summary>
-        /// Data_SaveableDatabase_Update
+        /// Data_DatabaseWriter_Update
         /// </summary>
         /// <remarks></remarks>
         [TestMethod()]
-        public void Data_SaveableDatabase_Update()
+        public void Data_DatabaseWriter_Update()
         {
             var testEntity = new CustomerInfo();
-            var saver = SaveableDatabase<CustomerInfo>.Construct();
+            var saver = DatabaseWriter<CustomerInfo>.Construct();
             var oldFirstName = TypeExtension.DefaultString;
             var newFirstName = DateTime.UtcNow.Ticks.ToString();
             int entityID = TypeExtension.DefaultInteger;
             var entityKey = TypeExtension.DefaultGuid;
 
             // Create and capture original data
-            this.Data_SaveableDatabase_Insert();
+            this.Data_DatabaseWriter_Insert();
             testEntity = saver.GetAll().OrderByDescending(x => x.CreatedDate).FirstOrDefaultSafe();
             oldFirstName = testEntity.FirstName;
             entityID = testEntity.ID;
@@ -246,7 +247,8 @@ namespace Framework.Test
             Assert.IsTrue(testEntity.Key != TypeExtension.DefaultGuid);
 
             // Do Update
-            saver.Save(testEntity);
+            saver = DatabaseWriter<CustomerInfo>.Construct(testEntity);
+            saver.Save();
 
             // Pull from DB and retest
             testEntity = saver.GetByID(entityID);
@@ -258,20 +260,20 @@ namespace Framework.Test
         }
 
         /// <summary>
-        /// Data_SaveableDatabase_Delete
+        /// Data_DatabaseWriter_Delete
         /// </summary>
         /// <remarks></remarks>
         [TestMethod()]
-        public void Data_SaveableDatabase_Delete()
+        public void Data_DatabaseWriter_Delete()
         {
-            var saver = SaveableDatabase<CustomerInfo>.Construct();
+            var dbWriter = DatabaseWriter<CustomerInfo>.Construct();
             var testEntity = new CustomerInfo();
             var oldID = TypeExtension.DefaultInteger;
             var oldKey = TypeExtension.DefaultGuid;
 
             // Insert and baseline test
-            this.Data_SaveableDatabase_Insert();
-            testEntity = saver.GetAll().OrderByDescending(x => x.CreatedDate).FirstOrDefaultSafe();
+            this.Data_DatabaseWriter_Insert();
+            testEntity = dbWriter.GetAll().OrderByDescending(x => x.CreatedDate).FirstOrDefaultSafe();
             oldID = testEntity.ID;
             oldKey = testEntity.Key;
             Assert.IsTrue(testEntity.IsNew == false);
@@ -279,10 +281,11 @@ namespace Framework.Test
             Assert.IsTrue(testEntity.Key != TypeExtension.DefaultGuid);
 
             // Do delete
-            saver.Delete(testEntity);
+            dbWriter = DatabaseWriter<CustomerInfo>.Construct(testEntity);
+            dbWriter.Delete();
 
             // Pull from DB and retest
-            testEntity = saver.GetAll().Where(x => x.ID == oldID).FirstOrDefaultSafe();
+            testEntity = dbWriter.GetAll().Where(x => x.ID == oldID).FirstOrDefaultSafe();
             Assert.IsTrue(testEntity.IsNew);
             Assert.IsTrue(testEntity.ID != oldID);
             Assert.IsTrue(testEntity.Key != oldKey);
@@ -290,40 +293,41 @@ namespace Framework.Test
             Assert.IsTrue(testEntity.Key == TypeExtension.DefaultGuid);
 
             // Add to recycle bin for cleanup
-            SaveableDatabaseTests.RecycleBin.Add(testEntity.ID);
+            DatabaseWriterTests.RecycleBin.Add(testEntity.ID);
         }
 
         /// <summary>
-        /// Data_SaveableDatabase_Insert
+        /// Data_DatabaseWriter_Insert
         /// </summary>
         /// <remarks></remarks>
         [TestMethod()]
-        public void Data_SaveableDatabase_RepeatingQueries()
+        public void Data_DatabaseWriter_RepeatingQueries()
         {
-            var dataStore = SaveableDatabase<CustomerInfo>.Construct();
+            var dbWriter = DatabaseWriter<CustomerInfo>.Construct();
             var customer = new CustomerInfo();
            
             // Multiple Gets
-            var a = dataStore.GetAll().ToList();
+            var a = dbWriter.GetAll().ToList();
             var aCount = a.Count;
-            var b = dataStore.GetAll().ToList();
+            var b = dbWriter.GetAll().ToList();
             var bCount = b.Count;
             // datastore.Save
-            customer = dataStore.GetByID(a.FirstOrDefaultSafe().ID);
+            customer = dbWriter.GetByID(a.FirstOrDefaultSafe().ID);
             customer.FirstName = DateTime.UtcNow.Ticks.ToString();
-            dataStore.Save(customer);
+            dbWriter = DatabaseWriter<CustomerInfo>.Construct(customer);
+            dbWriter.Save();
             // Save check
-            var c = dataStore.GetAll().ToList();
+            var c = dbWriter.GetAll().ToList();
             var cCount = c.Count;
             Assert.IsTrue(aCount == bCount && bCount == cCount);
             // customer.save
             customer.Update();
             // Multiple Gets
-            var x = dataStore.GetAll().ToList();
+            var x = dbWriter.GetAll().ToList();
             var xCount = x.Count;
-            var y = dataStore.GetAll().ToList();
+            var y = dbWriter.GetAll().ToList();
             var yCount = y.Count;
-            var z = dataStore.GetAll().ToList();
+            var z = dbWriter.GetAll().ToList();
             var zCount = z.Count;
             Assert.IsTrue(xCount == yCount && yCount == zCount);
         }
@@ -334,13 +338,14 @@ namespace Framework.Test
         [ClassCleanupAttribute()]
         public static void Cleanup()
         {
-            var saver = SaveableDatabase<CustomerInfo>.Construct();
+            var dbWriter = DatabaseWriter<CustomerInfo>.Construct();
             var toDelete = new CustomerInfo();
 
-            foreach (int item in SaveableDatabaseTests.RecycleBin)
+            foreach (int item in DatabaseWriterTests.RecycleBin)
             {
-                toDelete = saver.GetAll().Where(x => x.ID == item).FirstOrDefaultSafe();
-                saver.Delete(toDelete);
+                toDelete = dbWriter.GetAll().Where(x => x.ID == item).FirstOrDefaultSafe();
+                dbWriter = DatabaseWriter<CustomerInfo>.Construct(toDelete);
+                dbWriter.Delete();
             }
         }
     }    

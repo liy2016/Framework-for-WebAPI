@@ -27,7 +27,7 @@ namespace Framework.Test
     /// <summary>
     /// ViewModel holds model and is responsible for server calls, navigation, etc.
     /// </summary>
-    public class TestViewModel<TModel> : CrudViewModel<TModel>, ICrudAsync<TModel, int> where TModel : ModelEntity<TModel>, new()
+    public class TestViewModel<TModel> : CrudViewModel<TModel>, ICrudOperationAsync<TModel> where TModel : ModelEntity<TModel>, new()
     {
         /// <summary>
         /// Currently running application

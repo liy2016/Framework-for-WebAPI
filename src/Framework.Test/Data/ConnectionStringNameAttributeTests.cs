@@ -51,7 +51,7 @@ namespace Framework.Test
             var result = TypeExtension.DefaultString;
             var configManager = new ConfigurationManagerFull();
             var configConnectString = new ConnectionStringSafe();
-            configConnectString = configManager.ConnectionString(this.GetAttributeValue<ConnectionStringName>(ConnectionStringName.DefaultValue));
+            configConnectString = configManager.ConnectionString(this.GetAttributeValue<ConnectionStringName>(ConnectionStringName.DefaultConnectionName));
             result = configConnectString.ToEF(typeof(ClassWithConnectString));
             Assert.IsTrue(result != TypeExtension.DefaultString);
             Assert.IsTrue(configConnectString.IsValid);
@@ -69,7 +69,7 @@ namespace Framework.Test
             var result = TypeExtension.DefaultString;
             var configManager = new ConfigurationManagerFull();
             var configConnectString = new ConnectionStringSafe();
-            configConnectString = configManager.ConnectionString(this.GetAttributeValue<ConnectionStringName>(ConnectionStringName.DefaultValue));
+            configConnectString = configManager.ConnectionString(this.GetAttributeValue<ConnectionStringName>(ConnectionStringName.DefaultConnectionName));
             result = configConnectString.ToEF(typeof(EntityWithConnectString));
             Assert.IsTrue(result != TypeExtension.DefaultString);
             Assert.IsTrue(configConnectString.IsValid);
@@ -88,7 +88,7 @@ namespace Framework.Test
             var configManager = new ConfigurationManagerFull();
             var configConnectString = new ConnectionStringSafe();
 
-            configConnectString = configManager.ConnectionString(this.GetAttributeValue<ConnectionStringName>(ConnectionStringName.DefaultValue));
+            configConnectString = configManager.ConnectionString(this.GetAttributeValue<ConnectionStringName>(ConnectionStringName.DefaultConnectionName));
             result = configConnectString.ToEF(typeof(EntityWithConnectString));
             Assert.IsTrue(result != TypeExtension.DefaultString);
             Assert.IsTrue(configConnectString.IsValid);

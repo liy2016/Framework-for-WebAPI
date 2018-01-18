@@ -46,7 +46,7 @@ namespace Framework.WebServices
         [HttpGet()]
         public CustomerModel Get(string id)
         {
-            var reader = ReadOnlyDatabase<CustomerInfo>.Construct();
+            var reader = DatabaseReader<CustomerInfo>.Construct();
             var customer = new CustomerInfo();
 
             if (id.IsInteger())
@@ -96,7 +96,7 @@ namespace Framework.WebServices
         [HttpDelete()]
         public CustomerModel Delete(string id)
         {
-            var reader = ReadOnlyDatabase<CustomerInfo>.Construct();
+            var reader = DatabaseReader<CustomerInfo>.Construct();
             var customer = new CustomerInfo();
             CustomerModel model = new CustomerModel();
             

@@ -29,7 +29,7 @@ namespace Framework.DataAccess
     /// <summary>
     /// EntityCustomer
     /// </summary>
-    [CLSCompliant(true), ConnectionStringName("DefaultConnection")]
+    [CLSCompliant(true), ConnectionStringName("DefaultConnection"), DatabaseSchemaName("EntityCode")]
     public partial class CustomerType : EntityInfo<CustomerType>, ICustomerType
     {
         /// <summary>
@@ -58,7 +58,7 @@ namespace Framework.DataAccess
         /// <returns>All records matching the passed name</returns>
         public static IQueryable<CustomerType> GetByName(string name)
         {
-            var reader = ReadOnlyDatabase<CustomerType>.Construct();
+            var reader = DatabaseReader<CustomerType>.Construct();
             return reader.GetAll().Where(x => x.Name == name);
         }
     }

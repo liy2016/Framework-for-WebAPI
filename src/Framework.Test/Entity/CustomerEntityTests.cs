@@ -325,7 +325,7 @@ namespace Framework.Test
         [ClassCleanupAttribute()]
         public static void Cleanup()
         {
-            var reader = ReadOnlyDatabase<CustomerInfo>.Construct();
+            var reader = DatabaseReader<CustomerInfo>.Construct();
             foreach (int item in CustomerEntityTests.RecycleBin)
             {
                 reader.GetByID(item).Delete();

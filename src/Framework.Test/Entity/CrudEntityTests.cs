@@ -186,7 +186,7 @@ namespace Framework.Test
         [ClassCleanupAttribute()]
         public static void Cleanup()
         {
-            var db = SaveableDatabase<CustomerInfo>.Construct();
+            var db = DatabaseWriter<CustomerInfo>.Construct();
             foreach (int item in CrudEntityTests.RecycleBin)
             {
                 db.GetByID(item).Delete();

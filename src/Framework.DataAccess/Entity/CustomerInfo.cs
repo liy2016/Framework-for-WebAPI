@@ -31,7 +31,7 @@ namespace Framework.DataAccess
     /// <summary>
     /// Customer DAO Entity
     /// </summary>
-    [CLSCompliant(true), ConnectionStringName("DefaultConnection")]
+    [CLSCompliant(true), ConnectionStringName("DefaultConnection"), DatabaseSchemaName("EntityCode")]
     public partial class CustomerInfo : CrudEntity<CustomerInfo>, ICustomer
     {
         /// <summary>
@@ -53,7 +53,7 @@ namespace Framework.DataAccess
         /// <returns></returns>
         public static IQueryable<CustomerInfo> GetByNameBirthdayKey(string firstName, string lastName, DateTime birthDate)
         {
-            var reader = ReadOnlyDatabase<CustomerInfo>.Construct();
+            var reader = DatabaseReader<CustomerInfo>.Construct();
             IQueryable<CustomerInfo> returnValue = reader.GetAll()
                 .Where(x => (firstName != TypeExtension.DefaultString && x.FirstName == firstName)
                 && (lastName != TypeExtension.DefaultString && x.LastName == lastName)
@@ -69,7 +69,7 @@ namespace Framework.DataAccess
         /// <returns>All records matching the passed ICustomer</returns>
         public static IQueryable<CustomerInfo> GetByAny(ICustomer searchFields)
         {
-            var reader = ReadOnlyDatabase<CustomerInfo>.Construct();
+            var reader = DatabaseReader<CustomerInfo>.Construct();
             IQueryable<CustomerInfo> returnValue = reader.GetAll()
                 .Where(x => (searchFields.FirstName != TypeExtension.DefaultString && x.FirstName.Contains(searchFields.FirstName))
                 || (searchFields.LastName != TypeExtension.DefaultString && x.LastName.Contains(searchFields.LastName))
@@ -81,7 +81,7 @@ namespace Framework.DataAccess
         /// <summary>
         /// Save the entity to the database. This method will auto-generate activity tracking.
         /// </summary>
-        public CustomerInfo Save()
+        public new CustomerInfo Save()
         {
             // Ensure data does not contain cross site scripting injection HTML/Js/SQL
             FirstName = new HtmlUnsafeCleanser(FirstName).Cleanse();
@@ -95,7 +95,7 @@ namespace Framework.DataAccess
         /// This method requires a valid Activity to track this database commit
         /// </summary>
         /// <param name="activity">Activity tracking this record</param>
-        public CustomerInfo Save(IActivityContext activity)
+        public new CustomerInfo Save(IActivityContext activity)
         {
             base.ActivityContextID = activity.ActivityContextID;
             // Ensure data does not contain cross site scripting injection HTML/Js/SQL
